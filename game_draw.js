@@ -1,4 +1,4 @@
-var GameDraw = function(_probability, _baseRange) {
+var GameDraw = function(_probability ,_baseRange) {
     var self = this;
     self.probability = _probability || [];
     self.range = [];
@@ -34,32 +34,28 @@ GameDraw.prototype.getRange = function() {
     return self.range;
 };
 
+GameDraw.prototype.getMaxOfArray = function(numArray) {
+    var self = this;
+    var numArray = self.probability;
+    var num = Math.max.apply(null, numArray);
+    var index = numArray.indexOf(num);
+    return index;
+}
+
 GameDraw.prototype.randomDarw = function() {
     var self = this;
     var tmp = 0; 
     var _range = self.getRange();
     
     tmp = self.randomIntInc();
+    console.log(tmp)
     for (var j = 0; j < _range.length; j++) {
         if(tmp >= _range[j].start && tmp <= _range[j].end) {
             return j;
         }
     }
 
+    return self.getMaxOfArray(); 
 };
 
-var gi = [1, 79, 20];
-var baseRange_test = 100000;
-var recode = [];
-var tmpx = 0;
-var game_draw = new GameDraw(gi, baseRange_test);
-
-for (var i = 0; i < baseRange_test; i++) {
-    var tmpx = game_draw.randomDarw();
-    if(!recode[tmpx]) {
-        recode[tmpx] = 0;
-    }
-    recode[tmpx] = recode[tmpx] + 1;
-}
-
-console.log(recode);
+module.exports = GameDraw;
